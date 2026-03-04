@@ -133,13 +133,13 @@ tibble(
 **Coefficient vs estimand:** the *coefficient* on `D` is not “the ATE” once effects vary with X.
 
 ```{r coef-vs-estimand}
-coef(m_g)["D"]
+coef(m_g)
 ```
 
 ### 1.6 IPW (propensity score weighting)
 
 Propensity score weighting re-weights the sample to create a pseudo-population where treatment is independent of covariates, allowing for estimation of causal effects without modeling the outcome directly.
-For the ATE, we use inverse probability of treatment weights (IPTW):
+For the ATE, we use inverse probability of treatment weights (IPTW), where treated units are weighted by 1/e_hat and control units are weighted by 1/(1-e_hat):
 ```{r ipw}
 m_ps <- glm(D ~ X, data = df, family = binomial())
 e_hat <- predict(m_ps, type = "response")
